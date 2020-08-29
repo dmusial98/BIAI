@@ -47,7 +47,7 @@ import os
 os.environ['CUDA_VISIBLE_DEVICES'] = "0"
 
 
-train_dir = 'idenprof-jpg/idenprof/train'
+train_dir = "idenprof-jpg/idenprof/train"
 test_dir = 'idenprof-jpg/idenprof/test'
 validation_dir = 'idenprof-jpg/idenprof/validation'
 
@@ -100,42 +100,36 @@ test_generator = test_datagen.flow_from_directory(
     batch_size = 64,
     class_mode = 'categorical')
 
-for data_batch, labels_batch in train_generator:
-    print(data_batch.shape)
-    print(labels_batch.shape)
-    break
+# from keras.preprocessing import image
 
-from keras.preprocessing import image
+# train_judge_dir = "idenprof-jpg/idenprof/train/firefighter"
 
-train_judge_dir = "idenprof-jpg/idenprof/train/firefighter"
+# import os
+# fnames = [os.path.join(train_judge_dir, fname) for fname in os.listdir(train_judge_dir)]
 
-import os
-fnames = [os.path.join(train_judge_dir, fname) for fname in os.listdir(train_judge_dir)]
+# img_path = fnames[3]
+# img = image.load_img(img_path, target_size=(224, 224))
 
-img_path = fnames[3]
-img = image.load_img(img_path, target_size=(224, 224))
+# x = image.img_to_array(img)
+# x= x.reshape((1,) + x.shape)
 
-x = image.img_to_array(img)
-x= x.reshape((1,) + x.shape)
+# import matplotlib.pyplot as plt
+# i = 0
+# for batch in train_datagen.flow(x, batch_size=1):
+#     plt.figure(i)
+#     imgplot = plt.imshow(image.array_to_img(batch[0]))
+#     i += 1
+#     if i % 4 == 0:
+#         break
 
-import matplotlib.pyplot as plt
-i = 0
-for batch in train_datagen.flow(x, batch_size=1):
-    plt.figure(i)
-    imgplot = plt.imshow(image.array_to_img(batch[0]))
-    i += 1
-    if i % 4 == 0:
-        break
+# plt.show()    
 
-plt.show()    
-
-
-# history = model.fit_generator(
-#     train_generator,
-#     steps_per_epoch = 7500/64,
-#     epochs = 30,
-#     validation_data = validation_generator,
-#     validation_steps = 1500/64)
+history = model.fit_generator(
+    train_generator,
+    steps_per_epoch = 100,
+    epochs = 100,
+    validation_data = validation_generator,
+    validation_steps = 50)
 
 
-# model.save('idenprof_attempt_1.h5')
+model.save('idenprof_attempt_1.h5')
