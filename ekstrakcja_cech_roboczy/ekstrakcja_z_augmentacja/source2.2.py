@@ -72,53 +72,53 @@ history = model.fit_generator(
     validation_steps=1500/64,
     verbose=2)
 
-# #wykresy
-# import matplotlib.pyplot as plt
+#wykresy
+import matplotlib.pyplot as plt
 
-# acc = history.history['acc']
-# val_acc = history.history['val_acc']
-# loss = history.history['loss']
-# val_loss = history.history['val_loss']
+acc = history.history['acc']
+val_acc = history.history['val_acc']
+loss = history.history['loss']
+val_loss = history.history['val_loss']
 
-# epochs = range(len(acc))
+epochs = range(len(acc))
  
-# plt.plot(epochs, acc, 'bo', label='Dokladnosc trenowania')
-# plt.plot(epochs, val_acc, 'b', label='Dokaldnosc walidacji')
-# plt.title('Dokladnosc trenowania i walidacji')
+plt.plot(epochs, acc, 'bo', label='Dokladnosc trenowania')
+plt.plot(epochs, val_acc, 'b', label='Dokaldnosc walidacji')
+plt.title('Dokladnosc trenowania i walidacji')
 
-# plt.legend()
+plt.legend()
 
-# plt.figure()
+plt.figure()
 
-# plt.plot(epochs, loss, 'bo', label='Strata trenowania')
-# plt.plot(epochs, val_loss, 'b', label='Strata walidacji')
-# plt.title('Strata trenowania i walidacji')
-# plt.legend()
+plt.plot(epochs, loss, 'bo', label='Strata trenowania')
+plt.plot(epochs, val_loss, 'b', label='Strata walidacji')
+plt.title('Strata trenowania i walidacji')
+plt.legend()
 
-# plt.show()
+plt.show()
 
-# #Dostrajanie modelu
-# conv_base.trainable = True
+#Dostrajanie modelu
+conv_base.trainable = True
 
-# set_trainable = False
-# for layer in conv_base.layers:
-#     if layer.name == 'block5_conv1':
-#         set_trainable = True
-#     if set_trainable:
-#         layer.trainable = True
-#     else:
-#         layer.trainable = False
+set_trainable = False
+for layer in conv_base.layers:
+    if layer.name == 'block5_conv1':
+        set_trainable = True
+    if set_trainable:
+        layer.trainable = True
+    else:
+        layer.trainable = False
 
-# model.compile(loss='categorical_crossentropy',
-#                 optimizer=optimizers.RMSprop(lr=1e-5),
-#                 metrics=['acc'])
+model.compile(loss='categorical_crossentropy',
+                optimizer=optimizers.RMSprop(lr=1e-5),
+                metrics=['acc'])
 
-# history = model.fit_generator(
-#     train_generator,
-#     steps_per_epoch=7500/64,
-#     epochs=100, 
-#     validation_data=validation_generator,
-#     validation_steps=1500/64)
+history = model.fit_generator(
+    train_generator,
+    steps_per_epoch=7500/64,
+    epochs=100, 
+    validation_data=validation_generator,
+    validation_steps=1500/64)
 
 
 def smooth_curve(points, factor=0.8):
@@ -154,6 +154,3 @@ test_generator = test_datagen.flow_from_directory(
     test_dir, target_size=(224, 224),
     batch_size=64,
     class_mode='categorical')
-
-test_loss, test_acc = model.evaluate_generator(test_generator, steps=50)
-print("dokladnosc podczas testowania:", test_acc)
